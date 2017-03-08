@@ -123,7 +123,6 @@ class Planta(EstacionBase):
     '''
     classdocs
     '''
-
     NOMBRE = 'Planta'
     NRO_CASILLAS_ORDENES = 1
 
@@ -160,12 +159,12 @@ class Planta(EstacionBase):
         self.estacion_siguiente = estacion_siguiente
 
     def hacer_pedido(self):
-
+        
         if self.jugador:
             order = input('¿De cuanto desea hacer la orden?  ')
         else:
             order = 4
-        self.casillas_intermedias[0] = order
+        self.casillas_intermedias[0] += order
 
 
 class Distribuidor(EstacionBase):
@@ -226,12 +225,15 @@ class Minorista(EstacionBase):
 
     def avanzar_ordenes(self):
         '''
-        Obtenemos una demanda y
+        Obtenemos una demanda e intentamos satisfacerla, sino se logra se agrega la diferencia
+        a los pendientes
         '''
         if self.juego.semana_actual > self.juego.configuracion.semana_de_salto_de_demanda:
             demanda = 8
         else:
             demanda = 4
+        # Guardamos la demanda en el historico
+        self.juego.demandas_historico.append(demanda)
         # Calculamos la cantidad optima de inventario a enviar
         orden_a_entregar = demanda + self.pendiente_actual
         # Si no podemos despachar toda la orden, despachamos cuanto podemos y

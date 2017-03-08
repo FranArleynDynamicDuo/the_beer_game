@@ -21,13 +21,16 @@ class Juego(object):
         self.mayorista = mayorista
         self.minorista = minorista
         self.semana_actual = 0
-        self.demandas = []
+        self.demandas_historico = []
         self.costo = 0
         self.configuracion = configuracion
 
     def configurar(self):
+        '''
+        Configura los atributos generales del juego y define los jugadores
+        que jugaran y con que estacion
+        '''
         planta = None
-
         while not planta:
             jugador_comfirmacion = input(
                 '¿Desea que algun jugador represente a la planta?  (S/N)')
