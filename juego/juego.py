@@ -11,6 +11,7 @@ class Juego(object):
     '''
     Informacion Basica del juego
     '''
+
     def __init__(self, planta=None, distribuidor=None,
                  mayorista=None, minorista=None, configuracion=None):
         '''
@@ -24,6 +25,10 @@ class Juego(object):
         self.demandas_historico = []
         self.costo = 0
         self.configuracion = configuracion
+
+    def __str__(self, *args, **kwargs):
+        return "Semana Actual: %d | Costo: %.2f | Configuracion: [%s]" % (
+            self.semana_actual, self.costo, str(self.configuracion))
 
     def configurar(self):
         '''
@@ -40,7 +45,7 @@ class Juego(object):
                                 jugador=Jugador(nombre=nombre))
             elif jugador_comfirmacion == 'N':
                 planta = Planta(juego=self)
-    
+
         distribuidor = None
         while not distribuidor:
             jugador_comfirmacion = input(
@@ -51,7 +56,7 @@ class Juego(object):
                                             jugador=Jugador(nombre=nombre))
             elif jugador_comfirmacion == 'N':
                 distribuidor = Distribuidor(juego=self)
-    
+
         mayorista = None
         while not mayorista:
             jugador_comfirmacion = input(
@@ -62,7 +67,7 @@ class Juego(object):
                                       jugador=Jugador(nombre=nombre))
             elif jugador_comfirmacion == 'N':
                 mayorista = Mayorista(juego=self)
-    
+
         minorista = None
         while not minorista:
             jugador_comfirmacion = input(
@@ -73,20 +78,20 @@ class Juego(object):
                                       jugador=Jugador(nombre=nombre))
             elif jugador_comfirmacion == 'N':
                 minorista = Minorista(juego=self)
-    
+
         self.planta = planta
         self.distribuidor = distribuidor
         self.mayorista = mayorista
         self.minorista = minorista
-    
+
         planta.estacion_siguiente = distribuidor
-    
+
         distribuidor.estacion_anterior = planta
         distribuidor.estacion_siguiente = mayorista
-    
+
         mayorista.estacion_anterior = distribuidor
         mayorista.estacion_siguiente = minorista
-    
+
         minorista.estacion_anterior = mayorista
 
     def registrar_semana(self):
@@ -96,27 +101,37 @@ class Juego(object):
         # Planta
         self.planta.inventario_historico.append(self.planta.inventario_actual)
         self.planta.pendiente_historico.append(self.planta.pendiente_actual)
-        self.costo += self.planta.inventario_actual * self.configuracion.precio_por_mantener
-        self.costo += self.planta.pendiente_actual * self.configuracion.precio_por_pendiente
+        self.costo += self.planta.inventario_actual * \
+            self.configuracion.precio_por_mantener
+        self.costo += self.planta.pendiente_actual * \
+            self.configuracion.precio_por_pendiente
         # Distribuidor
         self.distribuidor.inventario_historico.append(
             self.distribuidor.inventario_actual)
         self.distribuidor.pendiente_historico.append(
             self.distribuidor.pendiente_actual)
-        self.costo += self.distribuidor.inventario_actual * self.configuracion.precio_por_mantener
-        self.costo += self.distribuidor.pendiente_actual * self.configuracion.precio_por_pendiente
+        self.costo += self.distribuidor.inventario_actual * \
+            self.configuracion.precio_por_mantener
+        self.costo += self.distribuidor.pendiente_actual * \
+            self.configuracion.precio_por_pendiente
         # Mayorista
         self.mayorista.inventario_historico.append(
             self.mayorista.inventario_actual)
-        self.mayorista.pendiente_historico.append(self.mayorista.pendiente_actual)
-        self.costo += self.mayorista.inventario_actual * self.configuracion.precio_por_mantener
-        self.costo += self.mayorista.pendiente_actual * self.configuracion.precio_por_pendiente
+        self.mayorista.pendiente_historico.append(
+            self.mayorista.pendiente_actual)
+        self.costo += self.mayorista.inventario_actual * \
+            self.configuracion.precio_por_mantener
+        self.costo += self.mayorista.pendiente_actual * \
+            self.configuracion.precio_por_pendiente
         # Minorista
         self.minorista.inventario_historico.append(
             self.minorista.inventario_actual)
-        self.minorista.pendiente_historico.append(self.minorista.pendiente_actual)
-        self.costo += self.minorista.inventario_actual * self.configuracion.precio_por_mantener
-        self.costo += self.minorista.pendiente_actual * self.configuracion.precio_por_pendiente
+        self.minorista.pendiente_historico.append(
+            self.minorista.pendiente_actual)
+        self.costo += self.minorista.inventario_actual * \
+            self.configuracion.precio_por_mantener
+        self.costo += self.minorista.pendiente_actual * \
+            self.configuracion.precio_por_pendiente
 
     def ejecutar(self):
         '''

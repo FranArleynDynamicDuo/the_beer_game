@@ -50,6 +50,19 @@ class EstacionBase(object):
         # Estacion siguiente en la cadena de produccion
         self.estacion_siguiente = estacion_siguiente
 
+    def __str__(self, *args, **kwargs):
+        if not self.jugador:
+            jugador = "BOT"
+        else:
+            jugador = str(self.jugador)
+        return "Nombre: %s | Inventario Actual: %d | Pendiente Actual: %d | Produccion: %s | Ordenes: %s | Jugador: %s" % (
+            self.nombre,
+            self.inventario_actual,
+            self.pendiente_actual,
+            str(self.casillas_intermedias),
+            str(self.casillas_ordenes),
+            jugador)
+
     def avanzar_casillas(self):
         '''
         Agrega al inventario actual lo que esta en la ultima casilla intermedia y
@@ -159,7 +172,7 @@ class Planta(EstacionBase):
         self.estacion_siguiente = estacion_siguiente
 
     def hacer_pedido(self):
-        
+
         if self.jugador:
             order = input('¿De cuanto desea hacer la orden?  ')
         else:
