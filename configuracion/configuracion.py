@@ -4,11 +4,11 @@ Created on Mar 7, 2017
 @author: francisco
 '''
 
-class Settings(object):
+class Configuracion(object):
     '''
     classdocs
     '''
-    SEMANA_MAXIMA = 80
+    SEMANA_MAXIMA = 50
     SEMANA_DE_SALTO_DE_DEMANDA_POR_DEFECTO = 4
     PRECIO_POR_MANTENER = 0.5
     PRECIO_POR_PENDIENTE = 1
