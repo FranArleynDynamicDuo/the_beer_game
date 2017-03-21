@@ -37,6 +37,8 @@ class EstacionBase(object):
         self.pendiente_historico = []
         # Jugador que maneja la estacion
         self.jugador = jugador
+        
+        self.ultima_orden = 0
         # Casillas intermedias en la estacion entre la llegada
         # de producto y el envio
         self.casillas_intermedias = self.NRO_CASILLAS * \
@@ -92,6 +94,8 @@ class EstacionBase(object):
         tamano = len(self.casillas_ordenes)
         # Calculamos el indice del ultimo elemento
         ultimo = tamano - 1
+        
+        self.ultima_orden = self.casillas_ordenes[ultimo]
         # Calculamos la cantidad optima de inventario a enviar
         orden_a_entregar = self.casillas_ordenes[
             ultimo] + self.pendiente_actual
@@ -126,10 +130,24 @@ class EstacionBase(object):
         estacion anterior
         '''
         if self.jugador:
-            order = input('¿De cuanto desea hacer la orden?  ')
+            self.interfaz_jugador()
+            order = int(input('¿De cuanto desea hacer la orden?  '))
         else:
             order = 4
         self.estacion_anterior.casillas_ordenes[0] = order
+        
+    
+    def interfaz_jugador(self):
+        print('') 
+        print('*******************************************')
+        print('*        Estado actual del juego          *')
+        print('*******************************************')
+        print('Estacion: ' + self.nombre)
+        print('Jugador: ' + self.jugador.nombre)
+        print('Pendiente actual:  ' +  str(self.pendiente_actual))
+        print('Inventario actual: ' +  str(self.inventario_actual))
+        print('Ultima orden:  ' +  str(self.ultima_orden))
+        print('') 
 
 
 class Planta(EstacionBase):
@@ -160,6 +178,7 @@ class Planta(EstacionBase):
         self.pendiente_historico = []
         # Jugador que maneja la estacion
         self.jugador = jugador
+        self.ultima_orden = 0
         # Casillas intermedias en la estacion entre la llegada
         # de producto y el envio
         self.casillas_intermedias = self.NRO_CASILLAS * \
@@ -174,7 +193,8 @@ class Planta(EstacionBase):
     def hacer_pedido(self):
 
         if self.jugador:
-            order = input('¿De cuanto desea hacer la orden?  ')
+            self.interfaz_jugador()
+            order = int(input('¿De cuanto desea hacer la orden?  '))
         else:
             order = 4
         self.casillas_intermedias[0] += order
@@ -225,6 +245,7 @@ class Minorista(EstacionBase):
         self.pendiente_historico = []
         # Jugador que maneja la estacion
         self.jugador = jugador
+        self.ultima_orden = 0
         # Casillas intermedias en la estacion entre la llegada
         # de producto y el envio
         self.casillas_intermedias = self.NRO_CASILLAS * \
